@@ -1,0 +1,127 @@
+<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+  <a class="navbar-brand">
+    <img
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPq7K5KUpr1ZpXMaIfnXm7CMPeq5XwzZEcsnhohZXEKtTV_hgxD_iGMnYO8STheLq2fX4&usqp=CAU"
+      style="width:70px;">
+  </a>
+</nav>
+<div class="row">
+  <div class="col-sm-2">
+    <nav class="navbar navbar-light flex-fill" style="font-weight: bold; font-size: large;">
+      <!-- Links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" style="text-decoration: underline; color: black;" href="#">
+            <i class="fa fa-list-alt" aria-hidden="true" style="margin-right: 4px;"></i>Product List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" onclick="goToLoaiSP()">
+            <i class="fa fa-bars" aria-hidden="true" style="margin-right: 4px;"></i>Categories</a>
+        </li>
+        <li class="nav-item">
+          <a onclick="logout()" class="nav-link" style="color: red;">
+            <i class="fa fa-sign-out" aria-hidden="true" style="margin-right: 4px;"></i>Logout</a>
+        </li>
+      </ul>
+    </nav>
+
+  </div>
+
+  <div class="col-sm-10" style="margin-top: 16px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>Product List</h2>
+        </div>
+
+        <div class="col-sm-6 text-right">
+          <button onclick="goAddNewProd()" type="button" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+      <!-- 
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search here" id="searchKey" name="searchKey"
+            onkeyup="search()">
+        </div> -->
+
+      <table id="listSP" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Published</th>
+            <th>Image</th>
+            <th class="text-center">Management</th>
+          </tr>
+        </thead>
+        <tbody id="tblbody">
+
+          {{#each list}}
+            <tr>
+              <td>
+                {{this._id}}
+              </td>
+              <td>
+                {{this.productName}}
+              </td>
+
+              <td>
+                {{this.idLoaiSP.categoryName}}
+              </td>
+
+              <td>
+                {{this.price}} $
+              </td>
+              <td>
+                {{formatDate this.published}}
+              </td>
+              <td class="text-center"><img width="70" height="70" src="http://localhost:3000/images/{{this.img}}" alt="image"></td>
+
+              <td class="text-center">
+                  <button type="button" class="btn btn-warning" onclick="goToEditProduct('{{this._id}}')">Edit</button>
+                  <button type="button" class="btn btn-danger"
+                    onclick="handleDeleteProduct('{{this._id}}')">Remove</button>
+                </td>
+            </tr>
+          {{/each}}
+
+          
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      $('#listSP').DataTable();
+    });
+    function goAddNewProd() {
+      window.location.href = '/listSP/themSP'
+    }
+    function goToEditProduct(id) {
+      window.location.href = '/listSP/suaSP/' + id
+    }
+    function handleDeleteProduct(id) {
+      $.ajax({
+        type: "DELETE",
+        url: '/listSP/delete/' + id,
+        success: function (data) {
+          if (data.res == true) {
+            window.location.href = '/listSP'
+          }
+        }
+      });
+    }
+    function goToLoaiSP() {
+      window.location.href = '/listSP/categories'
+    }
+    function goToMayTinh() {
+      window.location.href = '/listSP/mayTinh'
+    }
+    function logout() {
+      window.location.href = '/logout'
+    }
+  </script>

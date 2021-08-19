@@ -1,0 +1,71 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <h2>Đăng nhập</h2>
+
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <label for="username">Email address:</label>
+                    <input type="text" class="form-control" placeholder="Enter email" id="username" name="username"
+                        onchange="validateUsername()" onkeyup="validateUsername()">
+                    <p id="usernameError" class="alert alert-danger d-none"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" placeholder="Enter password" id="password"
+                        name="password" onchange="validatePassword()" onkeyup="validatePassword()">
+                    <p id="passwordError" class="alert alert-danger d-none"></p>
+                </div>
+
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+            </form>
+
+
+
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
+</div>
+<script>
+    // validate form
+        var isUsernameVaild = false, isPasswordVaild = false;
+        function validateUsername() {
+            let username = document.getElementById("username").value;
+            if (!username || username == 0) {
+                document.getElementById("usernameError").innerText = 'Something wrong';
+                document.getElementById("usernameError").classList.remove('d-none');
+                isUsernameVaild = false;
+                validateForm();
+            } else{
+                document.getElementById("usernameError").innerText = '';
+                document.getElementById("usernameError").classList.add('d-none');
+                isUsernameVaild = true;
+                validateForm();
+            }
+        }
+        function validatePassword() {
+            let password = document.getElementById("password").value;
+            password = Number(password);
+            if (!password || password == 0) {
+                document.getElementById("passwordError").innerText = 'Something wrong';
+                document.getElementById("passwordError").classList.remove('d-none')
+                isPasswordVaild = false;
+                validateForm();
+            } else {
+                document.getElementById("passwordError").innerText = '';
+                document.getElementById("passwordError").classList.add('d-none');
+                isPasswordVaild = true;
+                validateForm();
+            }
+        }
+
+        function validateForm() {
+            if (isPasswordVaild == false || isUsernameVaild == false) {
+                document.getElementById("btnSubmit").disabled = true;
+            } else{
+                document.getElementById("btnSubmit").disabled = false;
+            }
+        }
+</script>

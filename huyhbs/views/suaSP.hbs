@@ -1,0 +1,188 @@
+<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+    <a class="navbar-brand">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPq7K5KUpr1ZpXMaIfnXm7CMPeq5XwzZEcsnhohZXEKtTV_hgxD_iGMnYO8STheLq2fX4&usqp=CAU"
+            style="width:70px;">
+    </a>
+    </div>
+
+    </div>
+</nav>
+<div class="row">
+    <div class="col-sm-2">
+        <nav class="navbar navbar-light flex-fill" style="font-weight: bold; font-size: large;">
+            <!-- Links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" onclick="goToListProduct()" style="text-decoration: underline; color: black;"
+                        href="#">
+                        <i class="fa fa-list-alt" aria-hidden="true" style="margin-right: 4px;"></i>Product List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="goToLoaiSP()">
+                        <i class="fa fa-bars" aria-hidden="true" style="margin-right: 4px;"></i>Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: red;">
+                        <i class="fa fa-sign-out" aria-hidden="true" style="margin-right: 4px;"></i>Logout</a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+
+
+    <div class="col-sm-10" style="margin-top: 16px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2>Edit Product</h2>
+                </div>
+
+                <div class="col-sm-6 text-right">
+                    <button onclick="goBack()" type="button" class="btn btn-primary">Go back</button>
+                </div>
+            </div>
+
+            <form action="/listSP/suaSP/{{product._id}}" method="POST" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label for="productName">Product Name:</label>
+                    <input type="text" class="form-control" placeholder="Product Name" id="productName"
+                        name="productName" value="{{product.productName}}" 
+                        onchange="validateProductName()" onkeyup="validateProductName()">
+                    <p id="productError" class="alert alert-danger d-none"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" class="form-control" placeholder="Enter price" id="price" name="price"
+                         value="{{product.price}}" onchange="validateProductPrice()" onkeyup="validateProductPrice()">
+                    <p id="priceError" class="alert alert-danger d-none"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="published">Published Date:</label>
+                    <input type="date" class="form-control" placeholder="Enter Published Date" id="published"
+                        name="published" value="{{formatDate product.published}}" onchange="validateProductPublished()">
+                    <p id="publishedError" class="alert alert-danger d-none"></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Categories</label>
+                    <select class="custom-select" name="idLoaiSP">
+                        {{#each listLoaiSP}}
+                        {{#if (isDefine this._id ../product.idLoaiSP)}}
+                        <option selected value="{{this._id}}">
+                            {{this.categoryName}}
+                        </option>
+                        {{else}}
+                        <option value="{{this._id}}">
+                            {{this.categoryName}}
+                        </option>
+                        {{/if}}
+                        {{/each}}
+                    </select>
+                </div>
+
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="imgChosen" name="imgChosen">
+                    <label class="custom-file-label" for="imgChosen">Choose Image</label>
+                </div>
+                <br>
+
+                <div><img width="50%" height="50%" id="showImg" src="http://localhost:3000/images/{{product.img}}" alt="image"></div>
+
+                <br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+    </div>
+
+
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader()
+                reader.onload = function (e) {
+                    $('#showImg').attr('src', e.target.result)
+                    $('#showImg').removeClass("d-none")
+                }
+                reader.readAsDataURL(input.files[0])
+            }
+        }
+        $("#imgChosen").change(function () {
+            readURL(this)
+        })
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+        function goBack() {
+            window.location.href = '/listSP'
+        }
+        function goToListProduct() {
+            window.location.href = '/'
+        }
+        function goToLoaiSP() {
+            window.location.href = '/listSP/categories'
+        }
+
+        // validate form
+        var isProductNameVaild = false, isProductPriceVaild = false, isProductPublished = false;
+        function validateProductName() {
+            let productName = document.getElementById("productName").value;
+            if (!productName || productName == 0 || productName.trim().length > 100) {
+                document.getElementById("productError").innerText = 'Something wrong';
+                document.getElementById("productError").classList.remove('d-none');
+                isProductNameVaild = false;
+                validateForm();
+            } else{
+                document.getElementById("productError").innerText = '';
+                document.getElementById("productError").classList.add('d-none');
+                isProductNameVaild = true;
+                validateForm();
+            }
+        }
+        function validateProductPrice() {
+            let productPrice = document.getElementById("price").value;
+            productPrice = Number(productPrice);
+            if (!productPrice || productPrice <= 0 || productPrice > 100) {
+                document.getElementById("priceError").innerText = 'Something wrong';
+                document.getElementById("priceError").classList.remove('d-none')
+                isProductPriceVaild = false;
+                validateForm();
+            } else {
+                document.getElementById("priceError").innerText = '';
+                document.getElementById("priceError").classList.add('d-none');
+                isProductPriceVaild = true;
+                validateForm();
+            }
+        }
+
+        function validateProductPublished() {
+            let published = document.getElementById("published").value;
+            let varDate = new Date(published);
+            let today = new Date();
+            today.setHours(0,0,0,0);
+            if (!published || varDate <= today) {
+                document.getElementById("publishedError").innerText = 'Something wrong';
+                document.getElementById("publishedError").classList.remove('d-none')
+                isProductPublished = false;
+                validateForm();
+            } else {
+                document.getElementById("publishedError").innerText = '';
+                document.getElementById("publishedError").classList.add('d-none');
+                isProductPublished = true;
+                validateForm();
+            }
+        }
+
+        function validateForm() {
+            if (isProductPublished == false || isProductPriceVaild == false || isProductNameVaild == false) {
+                document.getElementById("btnSubmit").disabled = true;
+            } else{
+                document.getElementById("btnSubmit").disabled = false;
+            }
+        }
+    </script>

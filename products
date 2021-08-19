@@ -1,0 +1,27 @@
+[{
+  "_id": {
+    "$oid": "6076a00196be86afce036e93"
+  },
+  "productName": "Nokia C1",
+  "price": 100,
+  "published": {
+    "$date": "2021-09-11T17:00:00Z"
+  },
+  "idLoaiSP": {
+    "$oid": "6076a1f196be86afce036e97"
+  },
+  "img": "meo1.jpg"
+},{
+  "_id": {
+    "$oid": "6076a0a596be86afce036e95"
+  },
+  "productName": "V Smart",
+  "price": 200,
+  "published": {
+    "$date": "2019-06-26T17:00:00Z"
+  },
+  "img": "download.jpg",
+  "idLoaiSP": {
+    "$oid": "6076a21396be86afce036e98"
+  }
+}]

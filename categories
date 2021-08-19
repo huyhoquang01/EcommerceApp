@@ -1,0 +1,11 @@
+[{
+  "_id": {
+    "$oid": "6076a1f196be86afce036e97"
+  },
+  "categoryName": "Category 1"
+},{
+  "_id": {
+    "$oid": "6076a21396be86afce036e98"
+  },
+  "categoryName": "Catergory 2"
+}]
